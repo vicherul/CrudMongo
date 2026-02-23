@@ -19,7 +19,6 @@ const client = new MongoClient(uri, {
     }
 }); 
 
-
 const conectDB = async (req, res, next) => {  //middleware para conectar a la base de datos
     try {
         await client.connect(); 
@@ -51,7 +50,7 @@ app.get('/products', conectDB, closeDB, async (req, res) => {
         const list = await req.products.find({}).toArray(); 
         res.json({ success: true, data: list }); 
     } catch (error) {
-        res.status(500).json({ success: false, error: "Error al obtener los productos" }); consulta
+        res.status(500).json({ success: false, error: "Error al obtener los productos" }); 
     }
 })
 
@@ -59,7 +58,7 @@ app.get('/products', conectDB, closeDB, async (req, res) => {
 app.post('/products', conectDB, closeDB, async (req, res) => { 
     try {
         const result = await req.products.insertOne(req.body); 
-        res.json({ success: true, message: "Producto Creado", insertedID: result.insertedID }) 
+        res.json({ success: true, message: "Producto Creado", insertedId: result.insertedId }) 
     } catch (error) {
         res.status(500).json({ success: false, error: "Error al crear el producto" }); 
     }
@@ -79,8 +78,7 @@ app.put('/products/:id', conectDB, closeDB, async (req, res) => {
     }
 }); 
 
-// Configuracion del Delete
-    
+// Configuracion del Delete  
 app.delete('/products/:id', conectDB, closeDB, async (req, res) => { 
     try {
         // Usamos deleteOne y solo pasamos el filtro del ID
